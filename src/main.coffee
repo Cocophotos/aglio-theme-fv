@@ -468,6 +468,7 @@ schema_rendering = (schema) ->
         continue
       param[key2] = value2
     flattened_struct.push(param)
+  console.log(flattened_struct)
   return flattened_struct
 
 

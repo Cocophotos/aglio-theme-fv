@@ -67,7 +67,7 @@ mixin Schema(schema)
     //- Draw a definition list of parameter names, types, defaults,
     //- examples and descriptions.
     .title
-        strong Response Parameters
+        Response Parameters
     dl.inner: each param in schema || []
         dt= self.urldec(param.name)
         dd
