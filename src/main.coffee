@@ -456,27 +456,31 @@ decorate = (api, md, slugCache, verbose) ->
               catch err
                 false
 
-schema_rendering = (schema) ->
-  flattened_struct = []
+schema_rendering = (schema, flattened_struct = [], required = []) ->
   schema = JSON.parse(schema)
   properties = schema.properties
+  if schema.hasOwnProperty('required')
+    required = schema.required
+
   for key, value of properties
     param = {
       "name": key,
       "description": ""
     }
-    if schema.hasOwnProperty('required') && schema.required.indexOf(key) != -1
+    if required.indexOf(key) != -1
       param['required'] = true
     else
       param['required'] = false
 
     for key2, value2 of value
       if key2 is "properties"
-        continue
-      param[key2] = value2
+        param['subparams'] = []
+        schema_rendering(JSON.stringify({'properties': value2}),
+            param.subparams, required)
+      else
+        param[key2] = value2
 
     flattened_struct.push(param)
-  console.log(flattened_struct)
   return flattened_struct
 
 

@@ -66,8 +66,6 @@ mixin Nav()
 mixin Schema(schema)
     //- Draw a definition list of parameter names, types, defaults,
     //- examples and descriptions.
-    .title
-        Response Parameters
     dl.inner: each param in schema || []
         dt= self.urldec(param.name)
         dd
@@ -83,6 +81,8 @@ mixin Schema(schema)
                     strong Default:&nbsp;
                     span= param.default
             != self.markdown(param.description)
+            if param.subparams
+                +Schema(param.subparams)
 
 mixin Parameters(params)
     //- Draw a definition list of parameter names, types, defaults,
@@ -153,6 +153,7 @@ mixin RequestResponseBody(request, collapse, showBlank)
                     != self.highlight(request.body, null, ['json', 'yaml', 'xml', 'javascript'])
                 div(style="height: 1px;")
             if request.schema
+                h5 Response Parameters
                 +Schema(self.schema_rendering(request.schema))
                 div(style="height: 1px;")
             if !request.hasContent
