@@ -82,6 +82,7 @@ mixin Schema(schema)
                 span.text-info.default
                     strong Default:&nbsp;
                     span= param.default
+            != self.markdown(param.description)
 
 mixin Parameters(params)
     //- Draw a definition list of parameter names, types, defaults,
